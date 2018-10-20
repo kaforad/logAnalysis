@@ -1,4 +1,4 @@
-## MY UDACITY- LOG ANALYSIS PROJECT ##
+## LOG ANALYSIS PROJECT ##
 
 **SUMMARY - Log Analysis**
  News paper site  internal reporting tool.This tool determines the article(s) site reader like or read the most. 
@@ -13,5 +13,9 @@
 - SQL QUERY
 
 ###RUNNING THE REPORTING TOOL
-Install PYTHON 2.7. Check https://www.python.org/downloads/ for more details
+Install PYTHON 2.7. Check https://www.python.org/downloads/ for more details.
+Download or Clone the reporting tool source code to you computer
 
+
+###REFERENCE(S)
+UDACITY
