@@ -24,6 +24,10 @@ def writeToFile(report, reportType):
 
 
 def articlePopularity():
+	""""
+	Function  outputs the most popular three articles of all time
+	from a news database that lead to errors	
+	"""
     conn = psycopg2.connect(dbname="news")
     cursor = conn.cursor()
     myquery = """Select title, logs.popularity from articles 
@@ -47,6 +51,10 @@ def articlePopularity():
 
 
 def authorPopularity():
+	""""
+	Function  outputs the most popular article authors of all time
+	from a news database that lead to errors	
+	"""
     conn = psycopg2.connect(dbname="news")
     cursor = conn.cursor()
     myquery = """ select authors.name as Author, sum(pTitle.popularity) as Popularity from 
@@ -76,6 +84,10 @@ def authorPopularity():
 
 
 def errorPopularity():
+	""""
+	Function outputs more 1% of articles requests
+	from a news database that lead to errors	
+	"""
 	conn = psycopg2.connect(dbname="news")
 	cursor = conn.cursor()
 	myquery = """select TO_CHAR(time, 'FMMonth FMDDth, YYYY') as time, 
