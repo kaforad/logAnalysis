@@ -40,5 +40,5 @@
 NOTE: the report will be displayed on your console and a text file name(report.txt). report.txt file will be created in the same path where you have newsdata.sql extracted into.
 
 ###REFERENCE(S) ###
-UDACITY
-http://pep8online.com
+- UDACITY
+- http://pep8online.com
