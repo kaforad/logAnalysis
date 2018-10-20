@@ -24,40 +24,30 @@ def writeToFile(report, reportType):
 
 
 def articlePopularity():
-	""""
-	Function  outputs the most popular three articles of all time
-	from a news database that lead to errors	
-	"""
-    conn = psycopg2.connect(dbname="news")
-    cursor = conn.cursor()
-    myquery = """Select title, logs.popularity from articles 
-    join (select reverse(split_part(reverse(path), '/', 1)) as path, 
-    count(*) as popularity from log  group by path having path 
-    like '%article%'order by popularity  desc limit 3) as logs  
-    on articles.slug = logs.path order by logs.popularity desc """
-    cursor.execute(myquery)
-    results = cursor.fetchall()
-    report = {}
-    i = 0
-    print(POPULAR_ARTICLE)
-    print("_________________________________________\n")
-    for result in results:
-        i = i + 1
-        print result[0], "____", result[1], "views \n"
-        report[i] = result[0], "____", result[1], "views"
-    print("\n\n")
-    writeToFile(report, POPULAR_ARTICLE)
-    conn.close()
+	""""Function  outputs the most popular three articles of all time from a news database that lead to errors"""
+	conn = psycopg2.connect(dbname="news")
+	cursor = conn.cursor()
+	myquery = """select title, logs.popularity from articles join (select reverse(split_part(reverse(path), '/', 1)) as path, count(*) as popularity from log  group by path having path like '%article%'order by popularity  desc limit 3) as logs on articles.slug = logs.path order by logs.popularity desc"""
+	cursor.execute(myquery)
+	results = cursor.fetchall()
+	report = {}
+	i = 0
+	print(POPULAR_ARTICLE)
+	print("_________________________________________\n")
+	for result in results:
+		i = i + 1 
+		print result[0], "____", result[1], "views \n"
+		report[i] = result[0], "____", result[1], "views"
+	print("\n\n")
+	writeToFile(report, POPULAR_ARTICLE)
+	conn.close()
 
 
 def authorPopularity():
-	""""
-	Function  outputs the most popular article authors of all time
-	from a news database that lead to errors	
-	"""
-    conn = psycopg2.connect(dbname="news")
-    cursor = conn.cursor()
-    myquery = """ select authors.name as Author, sum(pTitle.popularity) as Popularity from 
+	""""Function  outputs the most popular article authors of all time 	from a news database that lead to errors		"""
+	conn = psycopg2.connect(dbname="news")
+	cursor = conn.cursor()
+	myquery = """ select authors.name as Author, sum(pTitle.popularity) as Popularity from 
     authors join (select author,title from articles group by author,title) as 
     Aarticles on authors.id= Aarticles.author join 
     (Select title, logs.popularity from articles join
@@ -66,28 +56,25 @@ def authorPopularity():
     path like '%article%'order by popularity  desc ) as logs  
     on articles.slug = logs.path order by logs.popularity desc) as pTitle 
     on pTitle.title =Aarticles.title 
-    group by authors.name order by Popularity desc  """ 
-    cursor.execute(myquery)
-    results = cursor.fetchall()
-    report = {}
-    i = 0
-    print(POPULAR_AUTHOR)
-    print("_________________________________________\n")
-    for result in results:
-        i = i + 1
-        print result[0], "____", result[1], "views \n"
-        report[i] = result[0], "____", result[1], "views"
-    print("\n\n")
-    writeToFile(report, POPULAR_AUTHOR)
-    print("\n\n")
-    conn.close()
+    group by authors.name order by Popularity desc  """
+	cursor.execute(myquery)
+	results = cursor.fetchall()
+	report = {}
+	i = 0
+	print(POPULAR_AUTHOR)
+	print("_________________________________________\n")
+	for result in results:
+		i = i + 1
+		print result[0], "____", result[1], "views \n"
+		report[i] = result[0], "____", result[1], "views"
+	print("\n\n")
+	writeToFile(report, POPULAR_AUTHOR)
+	print("\n\n")
+	conn.close()
 
 
 def errorPopularity():
-	""""
-	Function outputs more 1% of articles requests
-	from a news database that lead to errors	
-	"""
+	""""Function outputs more 1% of articles requests from a news database that lead to errors	"""
 	conn = psycopg2.connect(dbname="news")
 	cursor = conn.cursor()
 	myquery = """select TO_CHAR(time, 'FMMonth FMDDth, YYYY') as time, 
@@ -112,3 +99,5 @@ def errorPopularity():
 articlePopularity()
 authorPopularity()
 errorPopularity()
+
+			
