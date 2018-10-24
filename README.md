@@ -34,7 +34,7 @@
 	1. -d news 
 	1. -f newsdata.sql
 
-### CREATING VIEWS IN THE DATABASE###
+### CREATING VIEWS IN THE DATABASE ###
 To run this report the following view should be created by running the script below on the database.
 There are five views to be created in total.
 
@@ -70,7 +70,7 @@ There are five views to be created in total.
 		where status<>'200 OK' 
 		group by cast(time as date);
 
-### RUNNING THE LOG ANALYSIS REPORT###
+### RUNNING THE LOG ANALYSIS REPORT ###
 - Use the command below to run the reporting tool.
 	python kaf_loganalysis
 
