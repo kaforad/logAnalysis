@@ -28,12 +28,49 @@
 	- cd into Vagrant.
 	
 ### CONNECTING TO THE DATABASE ###
-- Navigate to your vagrant path where the newsdata.sql was extracted and type the following commands(the command connect to the database server and load data to the database).
+- Navigate to your vagrant path where the newsdata.sql was extracted  into and type the following commands(the command connect to the database server and load data to the database).
  
 	1. psql -d news -f newsdata.sql.
 	1. -d news 
 	1. -f newsdata.sql
-- Connect to the database using the command psql -d news
+
+### CREATING VIEWS IN THE DATABASE###
+To run this report the following view should be created by running the script below on the database.
+There are five views to be created in total.
+
+### 1. VIEW NAME: VIEW_PathLog ###
+#### **VIEW_PathLog SCRIPT:** 
+    CREATE VIEW VIEW_PathLog AS
+		SELECT  path,count(*) as popularity from log 
+		group by path having path like '%article%' 
+		order by popularity  desc; 
+### 2. VIEW NAME: VIEW_ArticleLog ###
+#### **VIEW_ArticleLog SCRIPT:**
+	CREATE VIEW VIEW_ArticleLog AS
+		Select title, VIEW_PathLog.popularity from articles join VIEW_PathLog on 
+		VIEW_PathLog.path = concat('/article/', articles.slug) 
+		order by VIEW_PathLog.popularity desc;
+### 3. VIEW NAME: VIEW_ArticlesAuthor ###
+#### **VIEW_ArticlesAuthor SCRIPT:**
+	CREATE VIEW VIEW_ArticlesAuthor AS
+		select authors.name as Author, Aarticles.title as Title from 
+    	authors join 
+		(select author,title from articles group by author,title) as Aarticles on 
+		authors.id= Aarticles.author;
+### 4. VIEW NAME : VIEW_TotalDailyRequest ###
+####  **VIEW_TotalDailyRequest SCRIPT:**
+		CREATE VIEW VIEW_TotalDailyRequest AS
+            select cast(time as date),count(path) as count from log 
+			group by cast(time as date);
+
+### 5.	VIEW NAME : VIEW_DailyErrCount ### 
+####  **VIEW_DailyErrCount SCRIPT:**
+	CREATE VIEW VIEW_DailyErrCount AS 
+		select cast(time as date),count(path) as count from log 
+		where status<>'200 OK' 
+		group by cast(time as date);
+
+### RUNNING THE LOG ANALYSIS REPORT###
 - Use the command below to run the reporting tool.
 	python kaf_loganalysis
 
